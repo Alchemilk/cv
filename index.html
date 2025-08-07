@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KunKun的iPad</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #e0e0e0, #f5f5f5);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        /* 写实iPad容器 */
+        .ipad-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            background: #111;
+            border-radius: 38px;
+            padding: 25px;
+            box-shadow:
+                0 0 0 1px rgba(255,255,255,0.1),
+                0 30px 60px rgba(0, 0, 0, 0.5),
+                inset 0 0 30px rgba(0, 0, 0, 0.5),
+                inset 0 0 0 1px rgba(255,255,255,0.05);
+            overflow: hidden;
+            border: 12px solid #222;
+        }
+        
+        /* 屏幕边框细节 */
+        .ipad-container::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border-radius: 28px;
+            border: 1px solid rgba(255,255,255,0.05);
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        /* 主页按钮 */
+        .home-button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45px;
+            height: 45px;
+            background: #333;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.1);
+            box-shadow: 
+                inset 0 1px 3px rgba(255,255,255,0.1),
+                0 2px 5px rgba(0,0,0,0.5);
+            z-index: 20;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .home-button:hover {
+            transform: translateX(-50%) scale(1.1);
+            box-shadow: 
+                inset 0 1px 3px rgba(255,255,255,0.2),
+                0 3px 8px rgba(0,0,0,0.6);
+        }
+        
+        .home-button:active {
+            transform: translateX(-50%) scale(0.95);
+            background: #444;
+        }
+        
+        /* iPad屏幕 */
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #f8f8f8;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.5s ease;
+        }
+        
+        /* 水印背景 */
+        .screen::before {
+            content: 'KunKun的iPad';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 120px;
+            font-weight: 700;
+            color: rgba(0,0,0,0.05);
+            transform: rotate(-15deg);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* 天气动画容器 */
+        .weather-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        /* 太阳动画 */
+        .sun {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, #ffde00 0%, #ff8c00 70%);
+            border-radius: 50%;
+            box-shadow: 0 0 50px #ffde00;
+            top: 20%;
+            left: 20%;
+            animation: sunGlow 4s infinite alternate;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        @keyframes sunGlow {
+            0% { box-shadow: 0 0 50px #ffde00; }
+            50% { box-shadow: 0 0 70px #ffde00; transform: scale(1.05); }
+            100% { box-shadow: 0 0 50px #ffde00; }
+        }
+        
+        /* 更写实的云动画 */
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 100px;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+        }
+        
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+        }
+        
+        /* 大云朵 */
+        .big-cloud {
+            width: 180px;
+            height: 80px;
+            top: 15%;
+            left: -200px;
+            animation: cloudMove 120s linear infinite;
+        }
+        
+        .big-cloud::before {
+            width: 90px;
+            height: 90px;
+            top: -40px;
+            left: 20px;
+        }
+        
+        .big-cloud::after {
+            width: 70px;
+            height: 70px;
+            top: -30px;
+            right: 20px;
+        }
+        
+        /* 中型云 */
+        .medium-cloud {
+            width: 140px;
+            height: 60px;
+            top: 25%;
+            left: -180px;
+            animation: cloudMove 90s linear infinite reverse;
+        }
+        
+        .medium-cloud::before {
+            width: 70px;
+            height: 70px;
+            top: -30px;
+            left: 15px;
+        }
+        
+        .medium-cloud::after {
+            width: 50px;
+            height: 50px;
+            top: -20px;
+            right: 15px;
+        }
+        
+        /* 小云朵 */
+        .small-cloud {
+            width: 100px;
+            height: 40px;
+            top: 20%;
+            left: -150px;
+            animation: cloudMove 70s linear infinite;
+        }
+        
+        .small-cloud::before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 10px;
+        }
+        
+        .small-cloud::after {
+            width: 35px;
+            height: 35px;
+            top: -15px;
+            right: 10px;
+        }
+        
+        @keyframes cloudMove {
+            0% { transform: translateX(0) translateY(0); }
+            50% { transform: translateX(0) translateY(10px); }
+            100% { transform: translateX(1000px) translateY(0); }
+        }
+        
+        /* 雨动画 */
+        .rain {
+            position: absolute;
+            width: 1px;
+            height: 15px;
+            background: linear-gradient(to bottom, transparent, rgba(200,200,255,0.8));
+            animation: rainFall 0.8s linear infinite;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        @keyframes rainFall {
+            0% { transform: translateY(-50px); }
+            100% { transform: translateY(650px); }
+        }
+        
+        /* 闪电动画 */
+        .lightning {
+            position: absolute;
+            width: 2px;
+            height: 0;
+            background: white;
+            box-shadow: 0 0 15px white;
+            opacity: 0;
+            transform-origin: top;
+            transform: rotate(10deg);
+        }
+        
+        @keyframes lightningFlash {
+            0% { height: 0; opacity: 0; }
+            1% { height: 0; opacity: 0; }
+            2% { height: 100px; opacity: 0.8; transform: rotate(10deg); }
+            3% { height: 0; opacity: 0; }
+            4% { height: 0; opacity: 0; }
+            5% { height: 150px; opacity: 1; transform: rotate(-8deg); }
+            6% { height: 0; opacity: 0; }
+            100% { height: 0; opacity: 0; }
+        }
+        
+        /* 雪动画 */
+        .snowflake {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            filter: blur(0.5px);
+            animation: snowFall linear infinite;
+            transition: opacity 1s ease;
+        }
+        
+        @keyframes snowFall {
+            0% { transform: translateY(-50px) translateX(0) rotate(0deg); }
+            50% { transform: translateY(325px) translateX(30px) rotate(180deg); }
+            100% { transform: translateY(650px) translateX(0) rotate(360deg); }
+        }
+        
+        /* 时间和天气显示 */
+        .info-display {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .time {
+            font-size: 72px;
+            font-weight: 300;
+            color: #333;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .date {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .weather {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #333;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .weather-icon {
+            margin-right: 10px;
+            font-size: 36px;
+        }
+        
+        /* 应用按钮容器 */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            width: 80%;
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* 扁平化拟物按钮 */
+        .app-button {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            background: white;
+            box-shadow:
+                0 5px 15px rgba(0,0,0,0.1),
+                inset 0 -2px 5px rgba(0,0,0,0.1),
+                inset 0 2px 5px rgba(255,255,255,0.5);
+            border: none;
+            opacity: 0;
+        }
+        
+        .app-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                0 10px 20px rgba(0,0,0,0.15),
+                inset 0 -2px 5px rgba(0,0,0,0.1),
+                inset 0 2px 5px rgba(255,255,255,0.5);
+        }
+        
+        .app-button:active {
+            transform: translateY(2px) scale(0.98);
+            box-shadow: 
+                0 3px 10px rgba(0,0,0,0.1),
+                inset 0 -2px 5px rgba(0,0,0,0.1),
+                inset 0 2px 5px rgba(255,255,255,0.5);
+        }
+        
+        .app-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0));
+            pointer-events: none;
+        }
+        
+        .app-icon {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 5px;
+        }
+        
+        .app-name {
+            font-size: 12px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        /* 应用内容页面 */
+        .app-page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            z-index: 5;
+            display: none;
+            overflow: auto;
+            transform-origin: center;
+            animation: appOpen 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+        }
+        
+        @keyframes appOpen {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .page-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .back-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+            margin-right: 15px;
+            box-shadow: 
+                0 2px 5px rgba(0,0,0,0.1),
+                inset 0 -1px 3px rgba(0,0,0,0.1),
+                inset 0 1px 3px rgba(255,255,255,0.5);
+            transition: all 0.2s ease;
+        }
+        
+        .back-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .back-button:active {
+            transform: scale(0.95);
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .page-content {
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* 按钮出现的动画 */
+        @keyframes buttonAppear {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ipad-container">
+        <div class="home-button" id="home-button"></div>
+        <div class="screen">
+            <!-- 天气动画 -->
+            <div class="weather-animation" id="weather-animation">
+                <div class="sun"></div>
+                <div class="cloud big-cloud"></div>
+                <div class="cloud medium-cloud"></div>
+                <div class="cloud small-cloud"></div>
+                <!-- 雨、雪和闪电将在JS中动态生成 -->
+            </div>
+            
+            <!-- 时间和天气显示 -->
+            <div class="info-display">
+                <div class="time" id="current-time">12:00</div>
+                <div class="date" id="current-date">2023年6月15日 星期四</div>
+                <div class="weather">
+                    <span class="weather-icon" id="weather-icon">🌤️</span>
+                    <span id="weather-text">晴, 24°C</span>
+                </div>
+            </div>
+            
+            <!-- 应用按钮网格 -->
+            <div class="app-grid">
+                <button class="app-button" onclick="openApp('about')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3131/3131715.png" class="app-icon">
+                    <span class="app-name">关于我</span>
+                </button>
+                
+                <button class="app-button" onclick="openApp('portfolio')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3132/3132693.png" class="app-icon">
+                    <span class="app-name">作品集</span>
+                </button>
+                
+                <button class="app-button" onclick="openApp('skills')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3132/3132739.png" class="app-icon">
+                    <span class="app-name">技能</span>
+                </button>
+                
+                <button class="app-button" onclick="openApp('blog')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3132/3132697.png" class="app-icon">
+                    <span class="app-name">博客</span>
+                </button>
+                
+                <button class="app-button" onclick="openApp('music')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3669/3669490.png" class="app-icon">
+                    <span class="app-name">音乐</span>
+                </button>
+                
+                <button class="app-button" onclick="openApp('photos')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2916/2916366.png" class="app-icon">
+                    <span class="app-name">相册</span>
+                </button>
+                
+                <button class="app-button" onclick="openApp('contact')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3059/3059518.png" class="app-icon">
+                    <span class="app-name">联系</span>
+                </button>
+                
+                <button class="app-button" onclick="openApp('settings')">
+                    <img src="https://cdn-icons-png.flaticon.com/512/126/126472.png" class="app-icon">
+                    <span class="app-name">设置</span>
+                </button>
+            </div>
+            
+            <!-- 应用页面内容 -->
+            <div class="app-page" id="about-page">
+                <div class="page-header">
+                    <button class="back-button" onclick="closeApp()">←</button>
+                    <h1 class="page-title">关于我</h1>
+                </div>
+                <div class="page-content">
+                    <p>你好，我是KunKun！一名充满创意的设计师和开发者。</p>
+                    <p>我热爱将复杂的问题转化为简单、优雅的解决方案。在我的职业生涯中，我专注于创造既美观又实用的数字产品。</p>
+                    <p>当我不在电脑前工作时，你可以发现我在摄影、旅行或探索新的咖啡店。</p>
+                </div>
+            </div>
+            
+            <div class="app-page" id="portfolio-page">
+                <div class="page-header">
+                    <button class="back-button" onclick="closeApp()">←</button>
+                    <h1 class="page-title">作品集</h1>
+                </div>
+                <div class="page-content">
+                    <h3>精选项目</h3>
+                    <p><strong>电商平台设计</strong> - 为知名品牌设计了完整的购物体验，提升了30%转化率。</p>
+                    <p><strong>健康追踪App</strong> - 从概念到发布的全流程设计，获得2022年设计奖项。</p>
+                    <p><strong>企业仪表盘</strong> - 数据可视化项目，帮助客户提高决策效率。</p>
+                </div>
+            </div>
+            
+            <div class="app-page" id="skills-page">
+                <div class="page-header">
+                    <button class="back-button" onclick="closeApp()">←</button>
+                    <h1 class="page-title">技能</h1>
+                </div>
+                <div class="page-content">
+                    <h3>设计技能</h3>
+                    <p>UI/UX设计、交互设计、原型制作、用户研究</p>
+                    
+                    <h3>开发技能</h3>
+                    <p>HTML/CSS、JavaScript、React、Node.js</p>
+                    
+                    <h3>工具</h3>
+                    <p>Figma、Sketch、Adobe Creative Suite、VS Code</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 天气类型定义
+        const weatherTypes = {
+            sunny: {
+                icon: '☀️',
+                text: '晴, 26°C',
+                background: '#87CEEB',
+                animation: showSunny
+            },
+            cloudy: {
+                icon: '⛅',
+                text: '多云, 22°C',
+                background: '#B0C4DE',
+                animation: showCloudy
+            },
+            rainy: {
+                icon: '🌧️',
+                text: '雨, 19°C',
+                background: '#4682B4',
+                animation: showRainy
+            },
+            thunder: {
+                icon: '⚡',
+                text: '雷雨, 21°C',
+                background: '#1E90FF',
+                animation: showThunder
+            },
+            snowy: {
+                icon: '❄️',
+                text: '雪, -2°C',
+                background: '#ADD8E6',
+                animation: showSnowy
+            }
+        };
+        
+        // 当前天气状态
+        let currentWeather = 'sunny';
+        let rainElements = [];
+        let snowElements = [];
+        let lightningElements = [];
+        let timeUpdateInterval;
+        
+        // 初始化天气动画
+        function initWeatherAnimation() {
+            // 随机选择初始天气
+            const weatherKeys = Object.keys(weatherTypes);
+            currentWeather = weatherKeys[Math.floor(Math.random() * weatherKeys.length)];
+            updateWeather(currentWeather);
+            
+            // 每30秒随机切换天气
+            setInterval(() => {
+                const newWeather = weatherKeys[Math.floor(Math.random() * weatherKeys.length)];
+                if (newWeather !== currentWeather) {
+                    updateWeather(newWeather);
+                }
+            }, 30000);
+        }
+        
+        // 更新天气显示和动画
+        function updateWeather(weatherType) {
+            currentWeather = weatherType;
+            const weather = weatherTypes[weatherType];
+            
+            // 更新天气显示
+            document.getElementById('weather-icon').textContent = weather.icon;
+            document.getElementById('weather-text').textContent = weather.text;
+            
+            // 更新背景色
+            document.querySelector('.screen').style.background = weather.background;
+            
+            // 清除所有天气元素
+            clearAllWeatherElements();
+            
+            // 播放新天气动画
+            weather.animation();
+        }
+        
+        // 晴天动画
+        function showSunny() {
+            document.querySelector('.sun').style.opacity = '1';
+            document.querySelector('.big-cloud').style.opacity = '0.4';
+            document.querySelector('.medium-cloud').style.opacity = '0.3';
+            document.querySelector('.small-cloud').style.opacity = '0.2';
+        }
+        
+        // 多云动画
+        function showCloudy() {
+            document.querySelector('.sun').style.opacity = '0.2';
+            document.querySelector('.big-cloud').style.opacity = '0.9';
+            document.querySelector('.medium-cloud').style.opacity = '0.8';
+            document.querySelector('.small-cloud').style.opacity = '0.7';
+        }
+        
+        // 雨天动画
+        function showRainy() {
+            document.querySelector('.sun').style.opacity = '0';
+            document.querySelector('.big-cloud').style.opacity = '1';
+            document.querySelector('.medium-cloud').style.opacity = '0.9';
+            document.querySelector('.small-cloud').style.opacity = '0.8';
+            
+            const container = document.getElementById('weather-animation');
+            for (let i = 0; i < 80; i++) {
+                const rain = document.createElement('div');
+                rain.className = 'rain';
+                rain.style.left = `${Math.random() * 100}%`;
+                rain.style.animationDuration = `${0.5 + Math.random() * 0.7}s`;
+                rain.style.animationDelay = `${Math.random() * 0.5}s`;
+                rain.style.opacity = `${0.3 + Math.random() * 0.5}`;
+                container.appendChild(rain);
+                rainElements.push(rain);
+            }
+        }
+        
+        // 雷雨动画
+        function showThunder() {
+            showRainy();
+            
+            const container = document.getElementById('weather-animation');
+            for (let i = 0; i < 3; i++) {
+                const lightning = document.createElement('div');
+                lightning.className = 'lightning';
+                lightning.style.left = `${20 + Math.random() * 60}%`;
+                lightning.style.top = `${10 + Math.random() * 30}%`;
+                lightning.style.animation = `lightningFlash ${8 + Math.random() * 4}s infinite`;
+                container.appendChild(lightning);
+                lightningElements.push(lightning);
+            }
+        }
+        
+        // 雪天动画
+        function showSnowy() {
+            document.querySelector('.sun').style.opacity = '0';
+            document.querySelector('.big-cloud').style.opacity = '1';
+            document.querySelector('.medium-cloud').style.opacity = '0.9';
+            document.querySelector('.small-cloud').style.opacity = '0.8';
+            
+            const container = document.getElementById('weather-animation');
+            for (let i = 0; i < 70; i++) {
+                const snow = document.createElement('div');
+                snow.className = 'snowflake';
+                snow.style.left = `${Math.random() * 100}%`;
+                const size = 3 + Math.random() * 6;
+                snow.style.width = `${size}px`;
+                snow.style.height = `${size}px`;
+                snow.style.animationDuration = `${5 + Math.random() * 15}s`;
+                snow.style.animationDelay = `${Math.random() * 5}s`;
+                snow.style.opacity = `${0.5 + Math.random() * 0.5}`;
+                container.appendChild(snow);
+                snowElements.push(snow);
+            }
+        }
+        
+        // 清除所有天气元素
+        function clearAllWeatherElements() {
+            rainElements.forEach(rain => rain.remove());
+            snowElements.forEach(snow => snow.remove());
+            lightningElements.forEach(lightning => lightning.remove());
+            rainElements = [];
+            snowElements = [];
+            lightningElements = [];
+        }
+        
+        // 更新时间和日期
+        function updateTime() {
+            const now = new Date();
+            
+            // 格式化时间
+            const timeElement = document.getElementById('current-time');
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            timeElement.textContent = `${hours}:${minutes}:${seconds}`;
+            
+            // 格式化日期
+            const dateElement = document.getElementById('current-date');
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            const weekday = weekdays[now.getDay()];
+            dateElement.textContent = `${year}年${month}月${day}日 ${weekday}`;
+        }
+        
+        // 初始化时间更新
+        function initTimeUpdate() {
+            updateTime();
+            clearInterval(timeUpdateInterval);
+            timeUpdateInterval = setInterval(updateTime, 1000);
+        }
+        
+        // 按钮动画效果
+        function initButtons() {
+            const buttons = document.querySelectorAll('.app-button');
+            buttons.forEach((button, index) => {
+                button.style.animation = `buttonAppear 0.5s ease-out ${index * 0.1}s forwards`;
+                
+                button.addEventListener('click', function(e) {
+                    const rect = button.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const ripple = document.createElement('span');
+                    ripple.style.position = 'absolute';
+                    ripple.style.width = '10px';
+                    ripple.style.height = '10px';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.backgroundColor = 'rgba(255,255,255,0.5)';
+                    ripple.style.left = `${x}px`;
+                    ripple.style.top = `${y}px`;
+                    ripple.style.transform = 'scale(0)';
+                    ripple.style.animation = 'ripple 0.6s linear';
+                    ripple.style.pointerEvents = 'none';
+                    
+                    button.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                    
+                    if (navigator.vibrate) {
+                        navigator.vibrate(30);
+                    }
+                });
+            });
+        }
+        
+        // 打开应用
+        function openApp(appName) {
+            const page = document.getElementById(`${appName}-page`);
+            if (page) {
+                page.style.display = 'block';
+                document.querySelector('.screen').style.overflow = 'hidden';
+            }
+        }
+        
+        // 关闭应用
+        function closeApp() {
+            const pages = document.querySelectorAll('.app-page');
+            pages.forEach(page => {
+                page.style.display = 'none';
+            });
+            document.querySelector('.screen').style.overflow = 'auto';
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initTimeUpdate();
+            initButtons();
+            initWeatherAnimation();
+            
+            // 主页按钮点击事件
+            document.getElementById('home-button').addEventListener('click', function() {
+                closeApp();
+                if (navigator.vibrate) {
+                    navigator.vibrate(10);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
