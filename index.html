@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KunKun的iPad</title>
+    <title>Alchemilk的iPad</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
         
@@ -15,7 +15,7 @@
         }
         
         body {
-            background: linear-gradient(135deg, #e0e0e0, #f5f5f5);
+            background: #e8e8e8;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -23,75 +23,156 @@
             padding: 20px;
         }
         
-        /* 写实iPad容器 */
+        /* 更写实的iPad容器 */
         .ipad-container {
             position: relative;
-            width: 800px;
-            height: 600px;
-            background: #111;
-            border-radius: 38px;
-            padding: 25px;
+            width: 960px; /* 放大iPad尺寸 */
+            height: 720px;
+            background: #1a1a1a;
+            border-radius: 48px;
+            padding: 30px;
             box-shadow:
-                0 0 0 1px rgba(255,255,255,0.1),
-                0 30px 60px rgba(0, 0, 0, 0.5),
-                inset 0 0 30px rgba(0, 0, 0, 0.5),
+                0 15px 70px rgba(0, 0, 0, 0.4),
+                inset 0 0 40px rgba(0, 0, 0, 0.6),
                 inset 0 0 0 1px rgba(255,255,255,0.05);
             overflow: hidden;
-            border: 12px solid #222;
+            border: 16px solid #202020;
+            transform: perspective(2000px) rotateX(5deg);
+            transition: all 0.3s ease;
         }
         
-        /* 屏幕边框细节 */
+        /* 增加iPad边框高光和阴影细节，增强拟物感 */
         .ipad-container::before {
             content: '';
             position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            border-radius: 28px;
-            border: 1px solid rgba(255,255,255,0.05);
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.05), transparent);
             pointer-events: none;
             z-index: 10;
         }
         
-        /* 主页按钮 */
+        .ipad-container::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70%;
+            background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        /* 音量按钮和电源按钮 */
+        .ipad-buttons {
+            position: absolute;
+            top: 100px;
+            left: -8px;
+            width: 8px;
+            height: 120px;
+            background: #1a1a1a;
+            border-radius: 4px 0 0 4px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+        
+        .ipad-buttons::before, .ipad-buttons::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            background: #151515;
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .ipad-buttons::before {
+            height: 30px;
+            top: 0;
+        }
+        
+        .ipad-buttons::after {
+            height: 50px;
+            top: 50px;
+        }
+        
+        .power-button {
+            position: absolute;
+            top: 80px;
+            right: -8px;
+            width: 8px;
+            height: 60px;
+            background: #1a1a1a;
+            border-radius: 0 4px 4px 0;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+        
+        /* 屏幕边框细节 */
+        .screen-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 36px;
+            border: 1px solid rgba(255,255,255,0.08);
+            pointer-events: none;
+            z-index: 10;
+            margin: 12px;
+        }
+        
+        /* 主页按钮 - 更写实 */
         .home-button {
             position: absolute;
-            bottom: 20px;
+            bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
-            width: 45px;
-            height: 45px;
-            background: #333;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at center, #3a3a3a 0%, #2a2a2a 100%);
             border-radius: 50%;
-            border: 2px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
             box-shadow: 
                 inset 0 1px 3px rgba(255,255,255,0.1),
-                0 2px 5px rgba(0,0,0,0.5);
+                0 2px 5px rgba(0,0,0,0.5),
+                0 0 0 1px rgba(0,0,0,0.3);
             z-index: 20;
             cursor: pointer;
             transition: all 0.2s ease;
         }
         
+        .home-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
+        }
+        
         .home-button:hover {
-            transform: translateX(-50%) scale(1.1);
+            transform: translateX(-50%) scale(1.05);
             box-shadow: 
                 inset 0 1px 3px rgba(255,255,255,0.2),
-                0 3px 8px rgba(0,0,0,0.6);
+                0 3px 8px rgba(0,0,0,0.6),
+                0 0 0 1px rgba(0,0,0,0.3);
         }
         
         .home-button:active {
             transform: translateX(-50%) scale(0.95);
-            background: #444;
+            background: radial-gradient(circle at center, #444 0%, #333 100%);
         }
         
-        /* iPad屏幕 */
+        /* iPad屏幕 - 确保无滚动条 */
         .screen {
             width: 100%;
             height: 100%;
             background: #f8f8f8;
-            border-radius: 20px;
-            overflow: hidden;
+            border-radius: 24px;
+            overflow: hidden; /* 隐藏滚动条 */
             position: relative;
             display: flex;
             flex-direction: column;
@@ -100,18 +181,18 @@
             transition: background 0.5s ease;
         }
         
-        /* 水印背景 */
+        /* 替换水印为Alchemilk的主页 */
         .screen::before {
-            content: 'KunKun的iPad';
+            content: 'Alchemilk';
             position: absolute;
             width: 100%;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 120px;
+            font-size: 140px;
             font-weight: 700;
-            color: rgba(0,0,0,0.05);
+            color: rgba(0,0,0,0.03);
             transform: rotate(-15deg);
             pointer-events: none;
             z-index: 0;
@@ -132,12 +213,12 @@
         /* 太阳动画 */
         .sun {
             position: absolute;
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             background: radial-gradient(circle, #ffde00 0%, #ff8c00 70%);
             border-radius: 50%;
-            box-shadow: 0 0 50px #ffde00;
-            top: 20%;
+            box-shadow: 0 0 60px #ffde00;
+            top: 15%;
             left: 20%;
             animation: sunGlow 4s infinite alternate;
             opacity: 0;
@@ -145,9 +226,9 @@
         }
         
         @keyframes sunGlow {
-            0% { box-shadow: 0 0 50px #ffde00; }
-            50% { box-shadow: 0 0 70px #ffde00; transform: scale(1.05); }
-            100% { box-shadow: 0 0 50px #ffde00; }
+            0% { box-shadow: 0 0 60px #ffde00; }
+            50% { box-shadow: 0 0 80px #ffde00; transform: scale(1.05); }
+            100% { box-shadow: 0 0 60px #ffde00; }
         }
         
         /* 更写实的云动画 */
@@ -157,97 +238,173 @@
             border-radius: 100px;
             opacity: 0;
             transition: opacity 1.5s ease;
-            filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1));
+            filter: drop-shadow(0 5px 8px rgba(0,0,0,0.15));
+            z-index: 1;
         }
         
-        .cloud::before, .cloud::after {
-            content: '';
+        /* 云的多层次结构，更写实 */
+        .cloud-main {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .cloud-part {
             position: absolute;
             background: white;
             border-radius: 50%;
         }
         
-        /* 大云朵 */
+        /* 大云朵 - 更写实的结构 */
         .big-cloud {
-            width: 180px;
-            height: 80px;
+            width: 220px;
+            height: 100px;
             top: 15%;
-            left: -200px;
-            animation: cloudMove 120s linear infinite;
+            left: -250px;
+            animation: cloudMove 150s linear infinite;
         }
         
-        .big-cloud::before {
-            width: 90px;
-            height: 90px;
-            top: -40px;
+        .big-cloud .cloud-main {
+            top: 30px;
+        }
+        
+        .big-cloud .cloud-part:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: -50px;
             left: 20px;
         }
         
-        .big-cloud::after {
-            width: 70px;
-            height: 70px;
-            top: -30px;
-            right: 20px;
+        .big-cloud .cloud-part:nth-child(2) {
+            width: 140px;
+            height: 140px;
+            top: -70px;
+            left: 60px;
+        }
+        
+        .big-cloud .cloud-part:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: -40px;
+            right: 10px;
         }
         
         /* 中型云 */
         .medium-cloud {
-            width: 140px;
-            height: 60px;
+            width: 180px;
+            height: 80px;
             top: 25%;
-            left: -180px;
-            animation: cloudMove 90s linear infinite reverse;
+            left: -220px;
+            animation: cloudMove 110s linear infinite reverse;
         }
         
-        .medium-cloud::before {
-            width: 70px;
-            height: 70px;
-            top: -30px;
+        .medium-cloud .cloud-main {
+            top: 25px;
+        }
+        
+        .medium-cloud .cloud-part:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: -40px;
             left: 15px;
         }
         
-        .medium-cloud::after {
-            width: 50px;
-            height: 50px;
-            top: -20px;
-            right: 15px;
+        .medium-cloud .cloud-part:nth-child(2) {
+            width: 110px;
+            height: 110px;
+            top: -55px;
+            left: 50px;
+        }
+        
+        .medium-cloud .cloud-part:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            right: 10px;
         }
         
         /* 小云朵 */
         .small-cloud {
-            width: 100px;
-            height: 40px;
+            width: 140px;
+            height: 60px;
             top: 20%;
-            left: -150px;
-            animation: cloudMove 70s linear infinite;
+            left: -180px;
+            animation: cloudMove 90s linear infinite;
         }
         
-        .small-cloud::before {
-            width: 50px;
-            height: 50px;
-            top: -25px;
+        .small-cloud .cloud-main {
+            top: 20px;
+        }
+        
+        .small-cloud .cloud-part:nth-child(1) {
+            width: 60px;
+            height: 60px;
+            top: -30px;
             left: 10px;
         }
         
-        .small-cloud::after {
-            width: 35px;
-            height: 35px;
-            top: -15px;
-            right: 10px;
+        .small-cloud .cloud-part:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: -40px;
+            left: 40px;
+        }
+        
+        .small-cloud .cloud-part:nth-child(3) {
+            width: 45px;
+            height: 45px;
+            top: -20px;
+            right: 5px;
+        }
+        
+        /* 中间固定的云 */
+        .center-cloud {
+            width: 160px;
+            height: 70px;
+            top: 30%;
+            left: 40%;
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+        
+        .center-cloud .cloud-main {
+            top: 20px;
+        }
+        
+        .center-cloud .cloud-part:nth-child(1) {
+            width: 70px;
+            height: 70px;
+            top: -35px;
+            left: 10px;
+        }
+        
+        .center-cloud .cloud-part:nth-child(2) {
+            width: 90px;
+            height: 90px;
+            top: -45px;
+            left: 40px;
+        }
+        
+        .center-cloud .cloud-part:nth-child(3) {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            right: 5px;
         }
         
         @keyframes cloudMove {
             0% { transform: translateX(0) translateY(0); }
-            50% { transform: translateX(0) translateY(10px); }
-            100% { transform: translateX(1000px) translateY(0); }
+            30% { transform: translateX(0) translateY(15px); }
+            70% { transform: translateX(0) translateY(-10px); }
+            100% { transform: translateX(1100px) translateY(0); }
         }
         
-        /* 雨动画 */
+        /* 雨动画 - 更大更明显 */
         .rain {
             position: absolute;
-            width: 1px;
-            height: 15px;
-            background: linear-gradient(to bottom, transparent, rgba(200,200,255,0.8));
+            width: 2px;
+            height: 25px;
+            background: linear-gradient(to bottom, transparent, rgba(180, 200, 255, 0.9));
             animation: rainFall 0.8s linear infinite;
             opacity: 0;
             transition: opacity 0.5s ease;
@@ -255,49 +412,55 @@
         
         @keyframes rainFall {
             0% { transform: translateY(-50px); }
-            100% { transform: translateY(650px); }
+            100% { transform: translateY(750px); }
         }
         
-        /* 闪电动画 */
+        /* 闪电动画 - 持续时间更长 */
         .lightning {
             position: absolute;
-            width: 2px;
+            width: 3px;
             height: 0;
             background: white;
-            box-shadow: 0 0 15px white;
+            box-shadow: 0 0 25px 5px rgba(255,255,255,0.8);
             opacity: 0;
             transform-origin: top;
             transform: rotate(10deg);
+            z-index: 2;
         }
         
         @keyframes lightningFlash {
             0% { height: 0; opacity: 0; }
             1% { height: 0; opacity: 0; }
-            2% { height: 100px; opacity: 0.8; transform: rotate(10deg); }
-            3% { height: 0; opacity: 0; }
-            4% { height: 0; opacity: 0; }
-            5% { height: 150px; opacity: 1; transform: rotate(-8deg); }
+            2% { height: 150px; opacity: 0.9; transform: rotate(10deg); }
+            3% { height: 150px; opacity: 0.9; transform: rotate(10deg); }
+            4% { height: 150px; opacity: 0.9; transform: rotate(10deg); }
+            5% { height: 0; opacity: 0; }
             6% { height: 0; opacity: 0; }
+            7% { height: 200px; opacity: 1; transform: rotate(-8deg); }
+            8% { height: 200px; opacity: 1; transform: rotate(-8deg); }
+            9% { height: 200px; opacity: 1; transform: rotate(-8deg); }
+            10% { height: 0; opacity: 0; }
             100% { height: 0; opacity: 0; }
         }
         
         /* 雪动画 */
         .snowflake {
             position: absolute;
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             background: white;
             border-radius: 50%;
             opacity: 0;
-            filter: blur(0.5px);
+            filter: blur(0.8px);
             animation: snowFall linear infinite;
             transition: opacity 1s ease;
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
         }
         
         @keyframes snowFall {
             0% { transform: translateY(-50px) translateX(0) rotate(0deg); }
-            50% { transform: translateY(325px) translateX(30px) rotate(180deg); }
-            100% { transform: translateY(650px) translateX(0) rotate(360deg); }
+            50% { transform: translateY(360px) translateX(40px) rotate(180deg); }
+            100% { transform: translateY(750px) translateX(0) rotate(360deg); }
         }
         
         /* 时间和天气显示 */
@@ -305,21 +468,21 @@
             position: relative;
             z-index: 2;
             text-align: center;
-            margin-bottom: 60px;
+            margin-bottom: 80px;
         }
         
         .time {
-            font-size: 72px;
+            font-size: 84px;
             font-weight: 300;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .date {
-            font-size: 18px;
+            font-size: 22px;
             color: #666;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         
@@ -327,21 +490,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 28px;
             color: #333;
             text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
         
         .weather-icon {
-            margin-right: 10px;
-            font-size: 36px;
+            margin-right: 15px;
+            font-size: 42px;
         }
         
         /* 应用按钮容器 */
         .app-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
+            gap: 35px;
             width: 80%;
             position: relative;
             z-index: 2;
@@ -349,9 +512,9 @@
         
         /* 扁平化拟物按钮 */
         .app-button {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
+            width: 90px;
+            height: 90px;
+            border-radius: 22px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -362,7 +525,7 @@
             overflow: hidden;
             background: white;
             box-shadow:
-                0 5px 15px rgba(0,0,0,0.1),
+                0 6px 18px rgba(0,0,0,0.12),
                 inset 0 -2px 5px rgba(0,0,0,0.1),
                 inset 0 2px 5px rgba(255,255,255,0.5);
             border: none;
@@ -372,7 +535,7 @@
         .app-button:hover {
             transform: translateY(-5px) scale(1.05);
             box-shadow: 
-                0 10px 20px rgba(0,0,0,0.15),
+                0 12px 25px rgba(0,0,0,0.18),
                 inset 0 -2px 5px rgba(0,0,0,0.1),
                 inset 0 2px 5px rgba(255,255,255,0.5);
         }
@@ -397,13 +560,13 @@
         }
         
         .app-icon {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 5px;
+            width: 45px;
+            height: 45px;
+            margin-bottom: 8px;
         }
         
         .app-name {
-            font-size: 12px;
+            font-size: 13px;
             color: #333;
             font-weight: 500;
         }
@@ -416,11 +579,11 @@
             width: 100%;
             height: 100%;
             background: white;
-            border-radius: 20px;
-            padding: 30px;
+            border-radius: 24px;
+            padding: 35px;
             z-index: 5;
             display: none;
-            overflow: auto;
+            overflow: hidden; /* 确保应用页面也没有滚动条 */
             transform-origin: center;
             animation: appOpen 0.6s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
         }
@@ -439,12 +602,12 @@
         .page-header {
             display: flex;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
         
         .back-button {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             background: #f0f0f0;
             display: flex;
@@ -452,7 +615,7 @@
             justify-content: center;
             border: none;
             cursor: pointer;
-            margin-right: 15px;
+            margin-right: 18px;
             box-shadow: 
                 0 2px 5px rgba(0,0,0,0.1),
                 inset 0 -1px 3px rgba(0,0,0,0.1),
@@ -469,14 +632,15 @@
         }
         
         .page-title {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 600;
             color: #333;
         }
         
         .page-content {
             color: #333;
-            line-height: 1.6;
+            line-height: 1.7;
+            font-size: 16px;
         }
         
         /* 按钮出现的动画 */
@@ -490,18 +654,63 @@
                 opacity: 1;
             }
         }
+        
+        /* 水波纹效果 */
+        @keyframes ripple {
+            to {
+                transform: scale(20);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="ipad-container">
+        <!-- 新增的iPad按钮细节 -->
+        <div class="ipad-buttons"></div>
+        <div class="power-button"></div>
+        <div class="screen-frame"></div>
+        
         <div class="home-button" id="home-button"></div>
         <div class="screen">
             <!-- 天气动画 -->
             <div class="weather-animation" id="weather-animation">
                 <div class="sun"></div>
-                <div class="cloud big-cloud"></div>
-                <div class="cloud medium-cloud"></div>
-                <div class="cloud small-cloud"></div>
+                
+                <!-- 更写实的云结构 -->
+                <div class="cloud big-cloud">
+                    <div class="cloud-main"></div>
+                    <div class="cloud-part"></div>
+                    <div class="cloud-part"></div>
+                    <div class="cloud-part"></div>
+                </div>
+                <div class="cloud medium-cloud">
+                    <div class="cloud-main"></div>
+                    <div class="cloud-part"></div>
+                    <div class="cloud-part"></div>
+                    <div class="cloud-part"></div>
+                </div>
+                <div class="cloud small-cloud">
+                    <div class="cloud-main"></div>
+                    <div class="cloud-part"></div>
+                    <div class="cloud-part"></div>
+                    <div class="cloud-part"></div>
+                </div>
+                
+                <!-- 中间的云 -->
+                <div class="cloud center-cloud" id="center-cloud-1">
+                    <div class="cloud-main"></div>
+                    <div class="cloud-part"></div>
+                    <div class="cloud-part"></div>
+                    <div class="cloud-part"></div>
+                </div>
+                <div class="cloud center-cloud" id="center-cloud-2">
+                    <div class="cloud-main"></div>
+                    <div class="cloud-part"></div>
+                    <div class="cloud-part"></div>
+                    <div class="cloud-part"></div>
+                </div>
+                
                 <!-- 雨、雪和闪电将在JS中动态生成 -->
             </div>
             
@@ -565,7 +774,7 @@
                     <h1 class="page-title">关于我</h1>
                 </div>
                 <div class="page-content">
-                    <p>你好，我是KunKun！一名充满创意的设计师和开发者。</p>
+                    <p>你好，我是Alchemilk！一名充满创意的设计师和开发者。</p>
                     <p>我热爱将复杂的问题转化为简单、优雅的解决方案。在我的职业生涯中，我专注于创造既美观又实用的数字产品。</p>
                     <p>当我不在电脑前工作时，你可以发现我在摄影、旅行或探索新的咖啡店。</p>
                 </div>
@@ -598,6 +807,75 @@
                     
                     <h3>工具</h3>
                     <p>Figma、Sketch、Adobe Creative Suite、VS Code</p>
+                </div>
+            </div>
+            
+            <!-- 其他应用页面可以在这里继续添加 -->
+            <div class="app-page" id="blog-page">
+                <div class="page-header">
+                    <button class="back-button" onclick="closeApp()">←</button>
+                    <h1 class="page-title">博客</h1>
+                </div>
+                <div class="page-content">
+                    <h3>最新文章</h3>
+                    <p><strong>设计思维在产品开发中的应用</strong> - 探讨如何将设计思维方法融入产品开发流程。</p>
+                    <p><strong>前端性能优化技巧</strong> - 提升网页加载速度的实用方法和工具。</p>
+                    <p><strong>用户体验研究的重要性</strong> - 为什么用户研究应该是产品设计的第一步。</p>
+                </div>
+            </div>
+            
+            <div class="app-page" id="music-page">
+                <div class="page-header">
+                    <button class="back-button" onclick="closeApp()">←</button>
+                    <h1 class="page-title">音乐</h1>
+                </div>
+                <div class="page-content">
+                    <h3>最近收听</h3>
+                    <p>• 电子音乐精选集</p>
+                    <p>• 古典音乐放松系列</p>
+                    <p>• 独立音乐人推荐</p>
+                    <p>• 电影原声大碟</p>
+                </div>
+            </div>
+            
+            <div class="app-page" id="photos-page">
+                <div class="page-header">
+                    <button class="back-button" onclick="closeApp()">←</button>
+                    <h1 class="page-title">相册</h1>
+                </div>
+                <div class="page-content">
+                    <h3>相册集</h3>
+                    <p>• 旅行照片</p>
+                    <p>• 设计作品</p>
+                    <p>• 日常记录</p>
+                    <p>• 风景摄影</p>
+                </div>
+            </div>
+            
+            <div class="app-page" id="contact-page">
+                <div class="page-header">
+                    <button class="back-button" onclick="closeApp()">←</button>
+                    <h1 class="page-title">联系</h1>
+                </div>
+                <div class="page-content">
+                    <p>邮箱: contact@alchemilk.com</p>
+                    <p>微信: alchemilk_design</p>
+                    <p>微博: @Alchemilk</p>
+                    <p>GitHub: github.com/alchemilk</p>
+                </div>
+            </div>
+            
+            <div class="app-page" id="settings-page">
+                <div class="page-header">
+                    <button class="back-button" onclick="closeApp()">←</button>
+                    <h1 class="page-title">设置</h1>
+                </div>
+                <div class="page-content">
+                    <h3>通用设置</h3>
+                    <p>• 显示设置</p>
+                    <p>• 声音设置</p>
+                    <p>• 隐私设置</p>
+                    <p>• 关于本机</p>
                 </div>
             </div>
         </div>
@@ -678,25 +956,49 @@
             
             // 播放新天气动画
             weather.animation();
+            
+            // 显示中间的云
+            showCenterClouds();
+        }
+        
+        // 显示中间的云
+        function showCenterClouds() {
+            const centerCloud1 = document.getElementById('center-cloud-1');
+            const centerCloud2 = document.getElementById('center-cloud-2');
+            
+            // 随机位置和动画
+            centerCloud1.style.left = `${30 + Math.random() * 30}%`;
+            centerCloud1.style.top = `${25 + Math.random() * 10}%`;
+            centerCloud1.style.animation = `cloudMove ${130 + Math.random() * 40}s linear infinite`;
+            
+            centerCloud2.style.left = `${50 + Math.random() * 20}%`;
+            centerCloud2.style.top = `${30 + Math.random() * 10}%`;
+            centerCloud2.style.animation = `cloudMove ${150 + Math.random() * 50}s linear infinite reverse`;
+            
+            // 显示云
+            setTimeout(() => {
+                centerCloud1.style.opacity = `${0.7 + Math.random() * 0.3}`;
+                centerCloud2.style.opacity = `${0.6 + Math.random() * 0.3}`;
+            }, 500);
         }
         
         // 晴天动画
         function showSunny() {
             document.querySelector('.sun').style.opacity = '1';
-            document.querySelector('.big-cloud').style.opacity = '0.4';
-            document.querySelector('.medium-cloud').style.opacity = '0.3';
-            document.querySelector('.small-cloud').style.opacity = '0.2';
+            document.querySelector('.big-cloud').style.opacity = '0.5';
+            document.querySelector('.medium-cloud').style.opacity = '0.4';
+            document.querySelector('.small-cloud').style.opacity = '0.3';
         }
         
         // 多云动画
         function showCloudy() {
-            document.querySelector('.sun').style.opacity = '0.2';
+            document.querySelector('.sun').style.opacity = '0.3';
             document.querySelector('.big-cloud').style.opacity = '0.9';
             document.querySelector('.medium-cloud').style.opacity = '0.8';
             document.querySelector('.small-cloud').style.opacity = '0.7';
         }
         
-        // 雨天动画
+        // 雨天动画 - 更大的雨滴
         function showRainy() {
             document.querySelector('.sun').style.opacity = '0';
             document.querySelector('.big-cloud').style.opacity = '1';
@@ -704,32 +1006,56 @@
             document.querySelector('.small-cloud').style.opacity = '0.8';
             
             const container = document.getElementById('weather-animation');
-            for (let i = 0; i < 80; i++) {
+            // 减少雨滴数量但增大尺寸，使效果更明显
+            for (let i = 0; i < 60; i++) {
                 const rain = document.createElement('div');
                 rain.className = 'rain';
                 rain.style.left = `${Math.random() * 100}%`;
-                rain.style.animationDuration = `${0.5 + Math.random() * 0.7}s`;
+                rain.style.animationDuration = `${0.6 + Math.random() * 0.8}s`;
                 rain.style.animationDelay = `${Math.random() * 0.5}s`;
-                rain.style.opacity = `${0.3 + Math.random() * 0.5}`;
+                rain.style.opacity = `${0.5 + Math.random() * 0.5}`;
+                
+                // 随机雨滴大小变化
+                const sizeFactor = 1 + Math.random() * 0.8;
+                rain.style.width = `${2 * sizeFactor}px`;
+                rain.style.height = `${25 * sizeFactor}px`;
+                
                 container.appendChild(rain);
                 rainElements.push(rain);
             }
         }
         
-        // 雷雨动画
+        // 雷雨动画 - 更长的闪电持续时间
         function showThunder() {
             showRainy();
             
             const container = document.getElementById('weather-animation');
-            for (let i = 0; i < 3; i++) {
+            for (let i = 0; i < 4; i++) {
                 const lightning = document.createElement('div');
                 lightning.className = 'lightning';
-                lightning.style.left = `${20 + Math.random() * 60}%`;
-                lightning.style.top = `${10 + Math.random() * 30}%`;
-                lightning.style.animation = `lightningFlash ${8 + Math.random() * 4}s infinite`;
+                lightning.style.left = `${15 + Math.random() * 70}%`;
+                lightning.style.top = `${5 + Math.random() * 20}%`;
+                // 延长闪电动画持续时间
+                lightning.style.animation = `lightningFlash ${6 + Math.random() * 5}s infinite`;
                 container.appendChild(lightning);
                 lightningElements.push(lightning);
             }
+            
+            // 添加背景闪烁效果
+            const screen = document.querySelector('.screen');
+            let flashInterval = setInterval(() => {
+                if (currentWeather === 'thunder') {
+                    screen.style.transition = 'background 0.3s ease';
+                    screen.style.background = '#6495ED';
+                    setTimeout(() => {
+                        if (currentWeather === 'thunder') {
+                            screen.style.background = weatherTypes.thunder.background;
+                        }
+                    }, 100);
+                } else {
+                    clearInterval(flashInterval);
+                }
+            }, 3000 + Math.random() * 5000);
         }
         
         // 雪天动画
@@ -740,16 +1066,16 @@
             document.querySelector('.small-cloud').style.opacity = '0.8';
             
             const container = document.getElementById('weather-animation');
-            for (let i = 0; i < 70; i++) {
+            for (let i = 0; i < 80; i++) {
                 const snow = document.createElement('div');
                 snow.className = 'snowflake';
                 snow.style.left = `${Math.random() * 100}%`;
-                const size = 3 + Math.random() * 6;
+                const size = 4 + Math.random() * 6;
                 snow.style.width = `${size}px`;
                 snow.style.height = `${size}px`;
-                snow.style.animationDuration = `${5 + Math.random() * 15}s`;
+                snow.style.animationDuration = `${8 + Math.random() * 12}s`;
                 snow.style.animationDelay = `${Math.random() * 5}s`;
-                snow.style.opacity = `${0.5 + Math.random() * 0.5}`;
+                snow.style.opacity = `${0.6 + Math.random() * 0.4}`;
                 container.appendChild(snow);
                 snowElements.push(snow);
             }
@@ -763,6 +1089,10 @@
             rainElements = [];
             snowElements = [];
             lightningElements = [];
+            
+            // 隐藏中间的云，准备重新显示
+            document.getElementById('center-cloud-1').style.opacity = '0';
+            document.getElementById('center-cloud-2').style.opacity = '0';
         }
         
         // 更新时间和日期
@@ -844,7 +1174,7 @@
             pages.forEach(page => {
                 page.style.display = 'none';
             });
-            document.querySelector('.screen').style.overflow = 'auto';
+            document.querySelector('.screen').style.overflow = 'hidden';
         }
         
         // 初始化
