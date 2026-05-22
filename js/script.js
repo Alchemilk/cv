@@ -66,9 +66,12 @@
                 heroWrapper.classList.add('hide');
                 contentSection.classList.add('visible');
                 hasScrolledToContent = true;
-                window.scrollTo(0, 0);
-                document.body.scrollTop = 0;
-                document.documentElement.scrollTop = 0;
+                setTimeout(function() {
+                    window.scrollTo(0, 0);
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+                    window.scrollIntoView({ behavior: 'auto', block: 'start' });
+                }, 100);
                 
                 document.querySelectorAll('.nav-btn').forEach(function(btn) {
                     btn.classList.remove('active');
@@ -83,6 +86,12 @@
                 heroWrapper.classList.remove('hide');
                 contentSection.classList.remove('visible');
                 hasScrolledToContent = false;
+                setTimeout(function() {
+                    window.scrollTo(0, 0);
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+                    window.scrollIntoView({ behavior: 'auto', block: 'start' });
+                }, 100);
                 
                 document.querySelectorAll('.nav-btn').forEach(function(btn) {
                     btn.classList.remove('active');
