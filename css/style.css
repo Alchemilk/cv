@@ -36,7 +36,7 @@ html {
 
 body {
     font-family: 'Noto Sans SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: url('../imgs/bg.jpg') no-repeat center center fixed;
+    background: url('../imgs/cv_bg.jpg') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
     color: var(--text-primary);
@@ -58,7 +58,7 @@ body {
     scroll-snap-align: start;
     scroll-snap-stop: always;
     position: relative;
-    background: url('../imgs/bg.jpg') no-repeat center center;
+    background: url('../imgs/hero_bg.jpg') no-repeat center center;
     background-size: cover;
 }
 
