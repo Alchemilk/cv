@@ -10,6 +10,8 @@
     <!-- TDesign Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tdesign-icons-font@latest/dist/tdesign-icons.css">
     <link rel="stylesheet" href="css/style.css">
+    <!-- curtains.js for WebGL rain effect -->
+    <script src="https://www.curtainsjs.com/build/curtains.min.js"></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -29,6 +31,13 @@
     <!-- Hero Wrapper (acts as curtain) -->
     <div class="hero-wrapper" id="heroWrapper">
         <section class="scroll-section hero">
+            <!-- WebGL Rain Effect -->
+            <div id="wrap-texture" class="wrap-texture">
+                <div id="canvas" class="rain-canvas"></div>
+                <div class="plane">
+                    <img data-sampler="dispImage" id="texture" src="imgs/hero_bg.jpg" crossorigin="anonymous"/>
+                </div>
+            </div>
             <div class="hero-content">
                 <img src="imgs/avatar.jpg" alt="alchemilk" class="hero-avatar" />
                 <p class="typewriter" id="typewriter"></p>
