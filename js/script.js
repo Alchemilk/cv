@@ -218,6 +218,19 @@ window.addEventListener('load', function() {
         }
     });
 
+    // 判断鼠标是否在主内容区域内
+    function isMouseInContentArea(e) {
+        var mainContainer = document.querySelector('.main-container');
+        if (!mainContainer) return false;
+        var rect = mainContainer.getBoundingClientRect();
+        return (
+            e.clientX >= rect.left &&
+            e.clientX <= rect.right &&
+            e.clientY >= rect.top &&
+            e.clientY <= rect.bottom
+        );
+    }
+
     window.addEventListener('wheel', function(e) {
         if (!isScrolling) {
             if (e.deltaY > 0 && !hasScrolledToContent) {
@@ -241,6 +254,9 @@ window.addEventListener('load', function() {
                     isScrolling = false;
                 }, 700);
             } else if (e.deltaY < 0 && hasScrolledToContent) {
+                // 只有鼠标不在主内容区域内时，向上滚动才回到hero页
+                if (isMouseInContentArea(e)) return;
+
                 isScrolling = true;
                 heroWrapper.classList.remove('hide');
                 contentSection.classList.remove('visible');
@@ -266,17 +282,32 @@ window.addEventListener('load', function() {
 
     let touchStartY = 0;
     let touchEndY = 0;
+    let touchStartX = 0;
     
     document.addEventListener('touchstart', function(e) {
         touchStartY = e.changedTouches[0].screenY;
+        touchStartX = e.changedTouches[0].screenX;
     }, { passive: true });
     
     document.addEventListener('touchend', function(e) {
         touchEndY = e.changedTouches[0].screenY;
-        handleSwipe();
+        handleSwipe(e);
     }, { passive: true });
     
-    function handleSwipe() {
+    // 判断触摸点是否在主内容区域内
+    function isTouchInContentArea(touchX, touchY) {
+        var mainContainer = document.querySelector('.main-container');
+        if (!mainContainer) return false;
+        var rect = mainContainer.getBoundingClientRect();
+        return (
+            touchX >= rect.left &&
+            touchX <= rect.right &&
+            touchY >= rect.top &&
+            touchY <= rect.bottom
+        );
+    }
+    
+    function handleSwipe(e) {
         if (!isScrolling) {
             const swipeThreshold = 50;
             const diff = touchStartY - touchEndY;
@@ -302,6 +333,11 @@ window.addEventListener('load', function() {
                     isScrolling = false;
                 }, 700);
             } else if (diff < -swipeThreshold && hasScrolledToContent) {
+                // 只有触摸点不在主内容区域内时，向上滑动才回到hero页
+                var touchX = e.changedTouches[0].screenX;
+                var touchY = e.changedTouches[0].screenY;
+                if (isTouchInContentArea(touchX, touchY)) return;
+
                 isScrolling = true;
                 heroWrapper.classList.remove('hide');
                 contentSection.classList.remove('visible');
