@@ -613,6 +613,10 @@ img { max-width: 100%; display: block; }
     .main-container {
         padding: 16px;
     }
+    .tab-content {
+        padding-left: 4px;
+        padding-right: 4px;
+    }
     .project-item {
         flex-direction: column;
         gap: 12px;
